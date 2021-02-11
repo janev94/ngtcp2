@@ -359,6 +359,7 @@ namespace {
 int handshake_completed(ngtcp2_conn *conn, void *user_data) {
   auto c = static_cast<Client *>(user_data);
 
+  printf("handshake completed\n");
   if (!config.quiet) {
     debug::handshake_completed(conn, user_data);
   }
@@ -366,6 +367,9 @@ int handshake_completed(ngtcp2_conn *conn, void *user_data) {
   if (c->handshake_completed() != 0) {
     return NGTCP2_ERR_CALLBACK_FAILURE;
   }
+
+  // FIXME: Should not really be force-exiting like that. Should close the connection gracefully
+  exit(0);
 
   return 0;
 }
